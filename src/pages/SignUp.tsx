@@ -11,19 +11,24 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex min-h-screen flex-col md:flex-row">
+    <div className="flex h-screen overflow-hidden flex-col md:flex-row">
       
-      {/* Painel Esquerdo: Melhoria no padding e alinhamento vertical */}
-      <div className="flex w-full flex-col items-center justify-center bg-white p-6 md:w-[40%] md:py-8">
+      {/* Painel Esquerdo */}
+      <div className="relative flex w-full flex-col items-center justify-center bg-white p-6 md:w-[40%] md:py-8">
         
-        {/* Wrapper do Formulário: Controla a largura máxima do conteúdo */}
-        <div className="w-full max-w-sm">
+        {/* Logo no canto superior direito da coluna esquerda */}
+        <div className="absolute top-6 right-6">
+          <img 
+            src="/logo_happy_kids.png" 
+            alt="Logo da Happy Kids" 
+            className="h-auto w-24 sm:w-28 md:w-40"
+          />
+        </div>
 
-          {/* Logo: Movido para o fluxo de conteúdo, centralizado */}
-          <img src="/logo_happy_kids.png" alt="Logo da Happy Kids" className="mx-auto mb-8 h-auto w-40" />
+        <div className="w-full max-w-sm">
           
           <form onSubmit={handleSignUp}>
-            <h1 className="mb-2 text-left text-4xl font-bold text-gray-800 md:text-5xl">
+            <h1 className="mb-8 text-left text-4xl font-bold text-gray-800 md:text-5xl">
               Sign Up
             </h1>
 
@@ -37,8 +42,7 @@ const SignUp: React.FC = () => {
                 sign in
               </a>.
             </p>
-            
-            {/* Inputs agora com w-full, respeitando o wrapper */}
+
             <input
               type="text"
               placeholder="Username"
@@ -46,7 +50,7 @@ const SignUp: React.FC = () => {
             />
             <input
               type="email"
-              placeholder="Email (opcional)"
+              placeholder="Email (optional)"
               className="my-3 w-full rounded-full border-none bg-[#f0f0f0] p-4 text-base"
             />
             <input
@@ -55,8 +59,7 @@ const SignUp: React.FC = () => {
               className="my-3 w-full rounded-full border-none bg-[#f0f0f0] p-4 text-base"
             />
 
-            {/* Regras de Senha: Estilizadas para se encaixar no novo fluxo */}
-            <ul className="my-3 list-disc space-y-1 pl-6 text-left text-sm text-[#444]">
+            <ul className="my-3 list-disc space-y-1 pl-6 text-left font-size: 0.885rem line-height: 1.27rem  text-[#444]">
               <li>Your password must contain at least 8 characters.</li>
               <li>Your password can't be entirely numeric.</li>
             </ul>
@@ -66,8 +69,7 @@ const SignUp: React.FC = () => {
               placeholder="Password (again)"
               className="my-3 w-full rounded-full border-none bg-[#f0f0f0] p-4 text-base"
             />
-            
-            {/* Botão com w-full */}
+
             <button
               type="submit"
               className="mt-6 h-[60px] w-full cursor-pointer rounded-full border-none bg-gradient-to-r from-[#ff00cc] to-[#3333ff] text-xl font-bold text-white transition-all hover:brightness-110 hover:from-[#d600b8] hover:to-[#1a1aff] hover:shadow-[0_4px_16px_rgba(51,51,255,0.18)]"
@@ -78,9 +80,13 @@ const SignUp: React.FC = () => {
         </div>
       </div>
 
-      {/* Painel Direito: Ocupa 60% em desktop, escondido no mobile */}
+      {/* Painel Direito */}
       <div className="relative hidden bg-[#f5f6f7] md:flex md:w-[60%]">
-        <img src="/capa-luxemburgo.png" alt="Capa de Luxemburgo" className="h-full w-full object-cover" />
+        <img 
+          src="/capa-luxemburgo.png" 
+          alt="Capa de Luxemburgo" 
+          className="h-full w-full object-cover" 
+        />
       </div>
     </div>
   );

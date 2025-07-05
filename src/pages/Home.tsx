@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import SideBar from './SideBar';
 
 const Home: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLuluClick = () => {
+    navigate('/chat-lulu');
+  };
+
   return (
     <div className="relative flex min-h-screen flex-col bg-[#f5f6f7] sm:flex-row">
       <SideBar />
@@ -32,12 +39,13 @@ const Home: React.FC = () => {
           <img 
             src="/lulu_bot.png" 
             alt="Lulu Bot" 
-            className="h-auto w-56 md:w-96"
+            className="h-auto w-56 cursor-pointer md:w-96"
+            onClick={handleLuluClick}
           />
         
         </main>
 
-        <footer className="w-full bg-[#f8f8f8] py-3 px-2 text-center text-sm text-gray-500 md:text-base">
+        <footer className="w-full bg-[#f8f8f8] mb-8 py-3 px-2 text-center text-sm text-gray-500 md:text-base">
             We are an experimental start-up. Thank you for testing
         </footer>
       </div>
