@@ -1,5 +1,5 @@
 import React, { useState, MouseEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const HomeIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-full w-full"><path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12l8.954-8.955a1.5 1.5 0 012.122 0l8.954 8.955M2.25 12l8.954 8.955a1.5 1.5 0 002.122 0l8.954-8.955M2.25 12h19.5" /></svg>;
 const ChatHistoryIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-full w-full"><path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193l-3.722.247c-.527.035-1.002-.187-1.334-.572l-1.932-2.318a2.25 2.25 0 00-3.238 0l-1.932 2.318c-.332.385-.807.607-1.334.572l-3.722-.247A2.122 2.122 0 013 14.894v-4.286c0-.97.616-1.813 1.5-2.097" /></svg>;
@@ -11,17 +11,20 @@ const LogoutIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" vie
 const MenuIcon = () => <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="h-full w-full"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" /></svg>;
 
 const menuItems = [
-  { icon: <HomeIcon />, label: 'Home', active: true },
-  { icon: <ChatHistoryIcon />, label: 'Chat History' },
-  { icon: <MemosIcon />, label: 'Favorited Memos' },
-  { icon: <JournalIcon />, label: 'My Life - Journal' },
-  { icon: <AtlasIcon />, label: 'My Atlas of Emotions' },
-  { icon: <IdeaBoxIcon />, label: 'Idea Box' },
+  { icon: <HomeIcon />, label: 'Home', path: '/home' },
+  { icon: <ChatHistoryIcon />, label: 'Chat History', path: '#' },
+  { icon: <MemosIcon />, label: 'Favorited Memos', path: '#' },
+  { icon: <JournalIcon />, label: 'My Life - Journal', path: '#' },
+  { icon: <AtlasIcon />, label: 'My Atlas of Emotions', path: '#' },
+  { icon: <IdeaBoxIcon />, label: 'Idea Box', path: '#' },
+  { icon: <IdeaBoxIcon />, label: 'Checkin History', path: '/checkin-history' },
+  { icon: <IdeaBoxIcon />, label: 'My Self', path: '/my-self' },
 ];
 
 const SideBar: React.FC = () => {
   const [isDrawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const toggleDrawer = () => setDrawerOpen(prev => !prev);
 
@@ -29,6 +32,13 @@ const SideBar: React.FC = () => {
     e.preventDefault();
     setDrawerOpen(false);
     navigate('/');
+  };
+
+  const handleNavigate = (path: string) => {
+    if (path !== '#') {
+      navigate(path);
+      setDrawerOpen(false);
+    }
   };
 
   const baseMenuItemClasses = "flex w-full cursor-pointer items-center gap-4 rounded-xl p-3 text-lg font-medium text-white transition-colors";
@@ -66,12 +76,19 @@ const SideBar: React.FC = () => {
             </div>
 
             <ul className="flex flex-1 flex-col gap-2">
-              {menuItems.map((item) => (
-                <li key={item.label} className={`${baseMenuItemClasses} ${item.active ? activeMenuItemClasses : ''} ${hoverMenuItemClasses}`}>
-                  <div className="h-6 w-6 flex-shrink-0">{item.icon}</div>
-                  <span>{item.label}</span>
-                </li>
-              ))}
+              {menuItems.map((item) => {
+                const isActive = location.pathname === item.path;
+                return (
+                  <li
+                    key={item.label}
+                    onClick={() => handleNavigate(item.path)}
+                    className={`${baseMenuItemClasses} ${isActive ? activeMenuItemClasses : ''} ${hoverMenuItemClasses}`}
+                  >
+                    <div className="h-6 w-6 flex-shrink-0">{item.icon}</div>
+                    <span>{item.label}</span>
+                  </li>
+                );
+              })}
               <li className="my-4 cursor-pointer rounded-lg border-2 border-dashed border-white/80 p-3 text-center text-lg font-semibold text-white hover:border-white hover:bg-white/10">
                 Surprise Me
               </li>
@@ -83,7 +100,7 @@ const SideBar: React.FC = () => {
                   <span>Logout</span>
                 </div>
               <div className="text-center">
-                 <img src="/logo_happy_kids.png" alt="Logo" className="mx-auto h-20 w-20 rounded-full border-4 border-white bg-white shadow-md"/>
+                 <img src="/logo_happy_kids.png" alt="Logo" className="mx-auto h-20 w-20 object-contain rounded-full border-4 border-white bg-white shadow-md"/>
               </div>
             </div>
           </aside>
@@ -97,15 +114,19 @@ const SideBar: React.FC = () => {
           </button>
           
           <ul className="flex flex-col items-center gap-6">
-            {menuItems.map((item) => (
-              <li
-                key={item.label}
-                title={item.label}
-                className={`cursor-pointer rounded-lg p-3 transition-colors ${item.active ? 'bg-white/30' : ''} hover:bg-white/20`}
-              >
-                <div className="h-7 w-7 text-white">{item.icon}</div>
-              </li>
-            ))}
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.path;
+              return (
+                <li
+                  key={item.label}
+                  title={item.label}
+                  onClick={() => handleNavigate(item.path)}
+                  className={`cursor-pointer rounded-lg p-3 transition-colors ${isActive ? 'bg-white/30' : ''} hover:bg-white/20`}
+                >
+                  <div className="h-7 w-7 text-white">{item.icon}</div>
+                </li>
+              );
+            })}
           </ul>
         </div>
 
@@ -113,7 +134,7 @@ const SideBar: React.FC = () => {
           <div onClick={handleLogout} title="Logout" className="cursor-pointer rounded-lg p-3 text-white transition-colors hover:bg-white/20">
             <div className="h-7 w-7"><LogoutIcon /></div>
           </div>
-          <img src="/logo_happy_kids.png" alt="Logo" className="h-12 w-12 rounded-full border-2 border-white bg-white" />
+          <img src="/logo_happy_kids.png" alt="Logo" className="h-12 w-12 object-contain rounded-full border-2 border-white bg-white" />
         </div>
       </nav>
     </>
