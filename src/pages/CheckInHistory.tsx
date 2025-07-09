@@ -84,8 +84,8 @@ const CheckInHistory = () => {
     <div className="relative flex min-h-screen flex-col bg-[#f5f6f7] sm:flex-row">
       <SideBar />
 
-      <div className="min-h-screen bg-gray-100 p-6">
-        <div className="max-w-6xl mx-auto">
+      <div className="flex-1 min-h-screen bg-gray-100 p-4 md:p-8">
+        <div className="w-full">
           {/* Header */}
           <div className="flex items-center gap-3 mb-6">
             <div className="bg-gradient-to-r from-purple-500 to-blue-500 p-2 rounded-full">
