@@ -14,7 +14,7 @@ const suggestions = [
 ];
 
 const ChatLulu: React.FC = () => {
-  const [showSuggestions] = useState(true);
+  const [showSuggestions, setShowSuggestions] = useState(true);
   const [thinking, setThinking] = useState(false);
   const [input, setInput] = useState('');
 
@@ -33,6 +33,7 @@ const ChatLulu: React.FC = () => {
     <div className="relative min-h-screen bg-[#f4f4f4] flex flex-row items-stretch justify-start overflow-x-hidden font-[Poppins]">
       <SideBar />
 
+      {/* Imagem da Lulu sempre visível */}
       <img 
         src="/lulu_bot_novo.png" 
         alt="Lulu Bot"
@@ -49,14 +50,14 @@ const ChatLulu: React.FC = () => {
           <span>Hi,</span> Lulu
         </h1>
 
-        {/* Prompts */}
-        <div className="flex gap-4 mb-7 justify-center flex-nowrap overflow-x-auto
-                        max-[900px]:flex-col max-[900px]:items-center max-[900px]:overflow-x-visible">
+        {/* Prompts - espaçamento revisado */}
+        <div className="flex gap-6 mb-4 justify-center flex-nowrap overflow-x-auto
+                        max-[900px]:flex-col max-[900px]:items-center max-[900px]:overflow-x-visible max-[900px]:gap-3">
           {promptOptions.map((opt, i) => (
             <button
               key={i}
               className="bg-gradient-to-r from-[#7b8dfb] to-[#3ec6f2] text-white rounded-full px-8 py-3 text-base font-bold shadow-sm whitespace-nowrap h-12 flex items-center hover:from-[#3ec6f2] hover:to-[#7b8dfb]
-                         max-[900px]:w-[90vw] max-[900px]:max-w-[400px] max-[900px]:mb-3"
+                         max-[900px]:w-[90vw] max-[900px]:max-w-[400px]"
               onClick={() => handlePromptClick(opt)}
             >
               {opt}
@@ -64,29 +65,29 @@ const ChatLulu: React.FC = () => {
           ))}
         </div>
 
-        {/* Suggestions */}
-        {showSuggestions && (
-          <div className="flex gap-4 mb-7 justify-center flex-nowrap overflow-x-auto
+        {/* Sugestões sempre visíveis */}
+        <div className="w-full flex flex-col items-center">
+          <div id="suggestions-list" className="flex gap-4 mb-7 justify-center flex-nowrap overflow-x-auto
                           max-[900px]:flex-col max-[900px]:items-center max-[900px]:overflow-x-visible">
             {suggestions.map((s, i) => (
               <button
                 key={i}
                 className="bg-[#f4f4f4] border border-[#e0e0e0] text-[#444] rounded-full px-8 py-3 text-base font-semibold shadow-sm whitespace-nowrap h-11 flex items-center hover:bg-[#e0e0e0] hover:border-[#bdbdbd]
-                           max-[900px]:w-[90vw] max-[900px]:max-w-[400px] max-[900px]:mb-3"
+                             max-[900px]:w-[90vw] max-[900px]:max-w-[400px]"
                 onClick={() => handlePromptClick(s)}
               >
                 {s}
               </button>
             ))}
           </div>
-        )}
+        </div>
 
         {/* Input + Send */}
-        <div className="w-full max-w-[700px] flex items-center mx-auto
-                        max-[900px]:flex-col max-[900px]:w-[90vw] max-[900px]:max-w-[400px] max-[900px]:gap-2">
+        <div className="w-full flex flex-row items-center mx-auto gap-2 justify-center
+                        max-w-[320px] sm:max-w-[400px] md:max-w-[600px]">
           <input
-            className="flex-1 h-12 rounded-full bg-white shadow-sm px-6 text-base border-none outline-none w-full
-                       max-[900px]:h-10 max-[900px]:px-4"
+            className="flex-1 h-10 rounded-full bg-white shadow-sm px-3 text-sm border-none outline-none min-w-0
+                       sm:h-12 sm:px-6 sm:text-base"
             placeholder="Type your message..."
             value={input}
             onChange={e => setInput(e.target.value)}
@@ -95,8 +96,8 @@ const ChatLulu: React.FC = () => {
           <button
             onClick={handleSend}
             disabled={thinking}
-            className="w-12 h-12 rounded-full bg-[#a18fff] flex items-center justify-center shadow-sm border-none hover:bg-[#9b6cff] disabled:opacity-60 disabled:cursor-not-allowed
-                       max-[900px]:w-10 max-[900px]:h-10"
+            className="w-10 h-10 rounded-full bg-[#a18fff] flex items-center justify-center shadow-sm border-none hover:bg-[#9b6cff] disabled:opacity-60 disabled:cursor-not-allowed
+                       sm:w-12 sm:h-12"
             title="Send"
           >
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
@@ -105,9 +106,10 @@ const ChatLulu: React.FC = () => {
           </button>
         </div>
 
+        {/* Estado pensando com animação */}
         {thinking && (
-          <div className="mt-4 text-[#7b8dfb] text-lg text-center animate-pulse">
-            <img src="/lulu_bot_novo.png" alt="Lulu thinking" className="w-20 h-auto mx-auto mb-2" />
+          <div className="mt-4 text-[#7b8dfb] text-lg text-center animate-pulse flex flex-col items-center">
+            <img src="/lulu_bot_novo.png" alt="Lulu thinking" className="w-20 h-auto mx-auto mb-2 animate-bounce" />
             <span>Lulu is thinking...</span>
           </div>
         )}
@@ -117,12 +119,20 @@ const ChatLulu: React.FC = () => {
         </footer>
       </div>
 
-      <div className="fixed top-32 right-8 flex flex-col gap-8 z-20 mt-[250px]
-                      max-[900px]:top-[420px] max-[900px]:right-2 max-[900px]:gap-4">
-        {['target', 'bookmark', 'memos', 'idea_box'].map((icon, i) => (
-          <button key={i} className="w-16 h-16 rounded-xl bg-gradient-to-br from-[#5de6e6] to-[#b58fff] flex items-center justify-center shadow-sm hover:shadow-lg transform hover:scale-105
-                                     max-[900px]:w-12 max-[900px]:h-12">
-            <img src={`/menu-icons/icon_${icon}.png`} alt={icon} className="w-9 h-9 max-[900px]:w-6 max-[900px]:h-6" />
+      {/* Botões laterais de atalho */}
+      <div className="fixed z-20 flex flex-col gap-4 right-2 bottom-24 sm:top-32 sm:right-8 sm:gap-8 sm:mt-[250px] sm:bottom-auto">
+        {[
+          { icon: 'target', gradient: 'from-[#5de6e6] to-[#7de2fc]' },
+          { icon: 'bookmark', gradient: 'from-[#4f6cf6] to-[#5de6e6]' },
+          { icon: 'memos', gradient: 'from-[#ffe259] to-[#ffa751]' },
+          { icon: 'idea_box', gradient: 'from-[#8d53ff] to-[#5ddee6]' },
+        ].map((item, i) => (
+          <button
+            key={i}
+            className={`w-12 h-12 sm:w-20 sm:h-20 rounded-2xl p-0 flex items-center justify-center bg-gradient-to-br ${item.gradient} border-none shadow-none transition-transform hover:scale-105`}
+            title={`Shortcut: ${item.icon.replace('_', ' ')}`}
+          >
+            <img src={`/menu-icons/icon_${item.icon}.png`} alt={item.icon} className="w-7 h-7 sm:w-10 sm:h-10 object-contain" style={{ filter: 'brightness(0) invert(1)' }} />
           </button>
         ))}
       </div>

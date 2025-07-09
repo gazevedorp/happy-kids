@@ -1,12 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { login } = useAuth();
+  
+  const [formData, setFormData] = useState({
+    username: '',
+    password: ''
+  });
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleEnter = (e: React.FormEvent) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    setError(''); // Limpar erro quando o usuário digita
+  };
+
+  const handleEnter = async (e: React.FormEvent) => {
     e.preventDefault();
+    setError('');
+    setIsLoading(true);
+
+    if (!formData.username || !formData.password) {
+      setError('Por favor, preencha todos os campos');
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      const success = await login(formData.username, formData.password);
+      if (success) {
     navigate('/home');
+      } else {
+        setError('Usuário ou senha incorretos');
+      }
+    } catch (error) {
+      setError('Erro ao fazer login. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleForgot = (e: React.MouseEvent) => {
@@ -47,22 +85,35 @@ const Login: React.FC = () => {
               first.
             </p>
 
+            {error && (
+              <div className="mb-4 p-3 bg-red-100 border border-red-400 text-red-700 rounded-lg text-sm">
+                {error}
+              </div>
+            )}
+
             <input
               type="text"
+              name="username"
               placeholder="username"
+              value={formData.username}
+              onChange={handleInputChange}
               className="my-4 w-full rounded-full border-none bg-[#f0f0f0] p-4 text-lg"
             />
             <input
               type="password"
+              name="password"
               placeholder="password"
+              value={formData.password}
+              onChange={handleInputChange}
               className="my-4 w-full rounded-full border-none bg-[#f0f0f0] p-4 text-lg"
             />
 
             <button
               type="submit"
-              className="mt-6 h-[60px] w-full cursor-pointer rounded-full border-none bg-gradient-to-r from-[#ff00cc] to-[#3333ff] text-xl font-bold text-white transition-all hover:brightness-110 hover:from-[#d600b8] hover:to-[#1a1aff] hover:shadow-[0_4px_16px_rgba(51,51,255,0.18)]"
+              disabled={isLoading}
+              className="mt-6 h-[60px] w-full cursor-pointer rounded-full border-none bg-gradient-to-r from-[#ff00cc] to-[#3333ff] text-xl font-bold text-white transition-all hover:brightness-110 hover:from-[#d600b8] hover:to-[#1a1aff] hover:shadow-[0_4px_16px_rgba(51,51,255,0.18)] disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Enter
+              {isLoading ? 'Entrando...' : 'Enter'}
             </button>
 
             <p className="mt-6 w-full text-right">
