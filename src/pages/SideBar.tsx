@@ -110,7 +110,10 @@ const SideBar: React.FC = () => {
                   <span>{item.label}</span>
                 </li>
               ))}
-              <li className="my-4 cursor-pointer rounded-lg border-2 border-dashed border-white/80 p-3 text-center text-lg font-semibold text-white hover:border-white hover:bg-white/10">
+              <li
+                className="my-4 cursor-pointer rounded-lg border-2 border-dashed border-white/80 p-3 text-center text-lg font-semibold text-white hover:border-white hover:bg-white/10"
+                onClick={() => { setDrawerOpen(false); navigate('/surprise-me'); }}
+              >
                 Surprise Me
               </li>
             </ul>

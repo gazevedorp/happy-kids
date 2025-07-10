@@ -14,6 +14,7 @@ import EmotionsCards from './pages/EmotionsCards';
 import AtlasEmotions from './pages/AtlasEmotions';
 import AtlasEmotionsExplain from './pages/AtlasEmotionsExplain';
 import AtlasEmotionsInfo from './pages/AtlasEmotionsInfo';
+import SurpriseMe from './pages/SurpriseMe';
 
 const App: React.FC = () => {
   return (
@@ -71,6 +72,11 @@ const App: React.FC = () => {
           <Route path="/atlas-emotion-info/:emotion" element={
             <ProtectedRoute>
               <AtlasEmotionsInfo />
+            </ProtectedRoute>
+          } />
+          <Route path="/surprise-me" element={
+            <ProtectedRoute>
+              <SurpriseMe />
             </ProtectedRoute>
           } />
         </Routes>

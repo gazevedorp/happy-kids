@@ -69,10 +69,10 @@ const SignUp: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen overflow-hidden flex-col md:flex-row">
+    <div className="flex h-screen overflow-hidden flex-col xl:flex-row">
       
       {/* Painel Esquerdo */}
-      <div className="relative flex w-full flex-col items-center justify-center bg-white p-6 md:w-[40%] md:py-8">
+      <div className="relative flex w-full min-h-screen flex-col items-center justify-center bg-white p-6 xl:w-[40%] xl:py-8 transition-all duration-300 max-[1366px]:mx-auto max-[1366px]:w-full max-[1366px]:justify-center">
         
         {/* Logo no canto superior direito da coluna esquerda */}
         <div className="absolute top-6 right-6">
@@ -158,7 +158,7 @@ const SignUp: React.FC = () => {
       </div>
 
       {/* Painel Direito */}
-      <div className="relative hidden bg-[#f5f6f7] md:flex md:w-[60%]">
+      <div className="relative login-right-panel bg-[#f5f6f7] xl:flex xl:w-[60%] max-[1366px]:hidden">
         <img 
           src="/capa-luxemburgo.png" 
           alt="Capa de Luxemburgo" 
